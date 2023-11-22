@@ -4,8 +4,9 @@
   gather_facts: false
   vars:
     snow_instance: "https://dev213985.service-now.com"
-    snow_user: "admin"
-    snow_password: "wyJRqr!3@AZ3"
+    #snow_user: "admin"
+    #snow_password: "wyJRqr!3@AZ3"
+    pat_token: "TDTndFA4D7CWGO4mAR9YglwYk-e-6Gd--E045gEEe_UzsWeH65ujsSGc9oahjrRDRv_mAIMhqxMoLxLN6lM6SA"
     ritm_number: "RITM0010001"
     assigned_user: ""
     desired_state: "5"
@@ -15,11 +16,11 @@
       uri:
         url: "https://{{ snow_instance }}/api/now/table/sc_req_item"
         method: GET
-        user: "{{ snow_user }}"
-        password: "{{ snow_password }}"
-        force_basic_auth: yes
         headers:
-          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer {{ pat_token }}"
+        return_content: yes
+        force_basic_auth: yes
         body_format: json
         params:
           sysparm_query: "number={{ ritm_number }}"
@@ -29,12 +30,12 @@
       uri:
         url: "https://{{ snow_instance }}/api/now/table/sc_req_item/{{ ritm_info.json.result[0].sys_id }}"
         method: PATCH
-        user: "{{ snow_user }}"
-        password: "{{ snow_password }}"
-        force_basic_auth: yes
         body_format: json
         headers:
-          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer {{ pat_token }}"
+        return_content: yes
+        force_basic_auth: yes
         body:
           state: "{{ desired_state }}"  # Set the desired state
           assigned_to: "{{ assigned_user }}"
