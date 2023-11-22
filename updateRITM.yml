@@ -1,0 +1,45 @@
+---
+- name: Update SNOW RITM State and Assign
+  hosts: localhost
+  gather_facts: false
+  vars:
+    snow_instance: "https://dev213985.service-now.com"
+    snow_user: "admin"
+    snow_password: "wyJRqr!3@AZ3"
+    ritm_number: "RITM0010001"
+    assigned_user: ""
+    desired_state: "5"
+
+  tasks:
+    - name: Get RITM Sys ID
+      uri:
+        url: "https://{{ snow_instance }}/api/now/table/sc_req_item"
+        method: GET
+        user: "{{ snow_user }}"
+        password: "{{ snow_password }}"
+        force_basic_auth: yes
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        params:
+          sysparm_query: "number={{ ritm_number }}"
+      register: ritm_info
+
+    - name: Update SNOW RITM State and Assign
+      uri:
+        url: "https://{{ snow_instance }}/api/now/table/sc_req_item/{{ ritm_info.json.result[0].sys_id }}"
+        method: PATCH
+        user: "{{ snow_user }}"
+        password: "{{ snow_password }}"
+        force_basic_auth: yes
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        body:
+          state: "{{ desired_state }}"  # Set the desired state
+          assigned_to: "{{ assigned_user }}"
+      register: snow_response
+
+    - name: Display SNOW API Response
+      debug:
+        var: snow_response.json
