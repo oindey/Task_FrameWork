@@ -5,11 +5,11 @@
 
   vars:
     servicenow_instance:  "https://dev213985.service-now.com" #"{{ servicenow_instance }}"
-    pat_token: "TDTndFA4D7CWGO4mAR9YglwYk-e-6Gd--E045gEEe_UzsWeH65ujsSGc9oahjrRDRv_mAIMhqxMoLxLN6lM6SA" #"{{ pat_token }}"
+    pat_token: "t0d55cQF0S3bHRkgF4JeYZzAP5s4h8H7wJto4Diq73HxsUT2d6Sb4baupnIj-IiIAg35s8wkMCkITn-HiHV0Bg" #"{{ pat_token }}"
     sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
-    user_sys_id: "" #"{{ user_sys_id }}"
-    extracted_output: "#03* - Automation In Progress -this is a demo message7" #"{{ extracted_output }}"
-    sctask_state: "5" #"{{ sctask_state}}"
+    user_sys_id: "6816f79cc0a8016401c5a33be04be441" #"{{ user_sys_id }}"
+    extracted_output: "#03* - Automation In Progress -'{{ Message }}'" #"{{ extracted_output }}"
+    sctask_state: "2" #"{{ sctask_state}}"
         
   tasks:
     - block:
@@ -25,14 +25,9 @@
           return_content: yes
           force_basic_auth: yes
           body:
-            state: "{{ sctask_state}}"
+            sctask_state: "{{ sctask_state}}"
             work_notes: "{{ extracted_output }}"
             assigned_to: "{{ user_sys_id }}"
-        register: snow_response
-
-      - name: Display SNOW API Response
-      debug:
-        var: snow_response.json
 
       rescue:
         - name: Log Output For Failure
