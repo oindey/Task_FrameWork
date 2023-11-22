@@ -8,7 +8,7 @@
     pat_token: "vou3i5MHlTdkHsB_Y5gJJMlqkPXzQRkCFL8VLCkmDIdKaAUKI8Jym3sYLicb0fcCti7otfsljm0EFJiNOtHNWQ" #"{{ pat_token }}"
     sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
     user_sys_id: "a8f98bb0eb32010045e1a5115206fe3a" #"{{ user_sys_id }}"
-    extracted_output: "#03* - Automation In Progress -this is a demo message3" #"{{ extracted_output }}"
+    extracted_output: "#03* - Automation In Progress -this is a demo message4" #"{{ extracted_output }}"
     sctask_state: "2" #"{{ sctask_state}}"
         
   tasks:
@@ -27,7 +27,7 @@
           body:
             state: "{{ sctask_state}}"
             work_notes: "{{ extracted_output }}"
-            assigned_to: "{{ user_sys_id }}"
+            Requested_for: "{{ user_sys_id }}"
 
       rescue:
         - name: Log Output For Failure
