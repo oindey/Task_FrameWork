@@ -12,23 +12,23 @@
     desired_state: "5"
 
   tasks:
-    - name: Get RITM Sys ID
-      uri:
-        url: "https://{{ snow_instance }}/api/now/table/sc_req_item"
-        method: GET
-        headers:
-          Accept: "application/json"
-          Authorization: "Bearer {{ pat_token }}"
-        return_content: yes
-        force_basic_auth: yes
-        body_format: json
-        params:
-          sysparm_query: "number={{ ritm_number }}"
-      register: ritm_info
+    # - name: Get RITM Sys ID
+    #   uri:
+    #     url: "https://{{ snow_instance }}/api/now/table/sc_req_item"
+    #     method: GET
+    #     headers:
+    #       Accept: "application/json"
+    #       Authorization: "Bearer {{ pat_token }}"
+    #     return_content: yes
+    #     force_basic_auth: yes
+    #     body_format: json
+    #     params:
+    #       sysparm_query: "number={{ ritm_number }}"
+    #   register: ritm_info
 
     - name: Update SNOW RITM State and Assign
       uri:
-        url: "https://{{ snow_instance }}/api/now/table/sc_req_item/{{ ritm_info.json.result[0].sys_id }}"
+        url: "https://{{ snow_instance }}/api/now/table/sc_req_item/05c48579932a31108a4470918bba1003"
         method: PATCH
         body_format: json
         headers:
