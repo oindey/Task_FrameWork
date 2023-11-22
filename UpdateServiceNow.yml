@@ -27,7 +27,7 @@
           body:
             state: "{{ sctask_state}}"
             work_notes: "{{ extracted_output }}"
-            Requested_for: "{{ user_sys_id }}"
+            taskCoordinator: "{{ user_sys_id }}"
 
       rescue:
         - name: Log Output For Failure
