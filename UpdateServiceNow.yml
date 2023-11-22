@@ -1,52 +1,99 @@
 ---
-- name: Update sctask deatils in ServiceNow
+- name: Update SNOW RITM State and Assign
   hosts: localhost
-  gather_facts: true
-
+  gather_facts: false
   vars:
-    servicenow_instance:  "https://dev213985.service-now.com" #"{{ servicenow_instance }}"
-    pat_token: "_kGEag2qQ4gU7mMow2MGsL51v-s93THT3i63iCve2eqJrrvTdLqWyXClA4sCvhiuEgUXrTkQ7SHDMBN2l2_eOw" #"{{ pat_token }}"
-    sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
-    user_sys_id: "a8f98bb0eb32010045e1a5115206fe3a" #"{{ user_sys_id }}"
-    extracted_output: "#03* - Automation In Progress -this is a demo message7" #"{{ extracted_output }}"
-    sctask_state: "2" #"{{ sctask_state}}"
-        
+    snow_instance: "https://dev213985.service-now.com"
+    snow_user: "admin"
+    snow_password: "wyJRqr!3@AZ3"
+    ritm_number: "RITM0010001"
+    assigned_user: ""
+    desired_state: "5"
+
   tasks:
-    - block:
-      - name: Update some fields in ServiceNow sctasks
-        uri:
-          url: "{{ servicenow_instance }}/api/now/table/sc_task/{{ sys_id }}"
-          method: PATCH
-          body_format: json
-          headers:
-            Accept: "application/json"
-            #Authorization: "Basic {{ encoded_credentials | string }}"
-            Authorization: "Bearer {{ pat_token }}"
-          return_content: yes
-          force_basic_auth: yes
-          body:
-            state: "{{ sctask_state}}"
-            work_notes: "{{ extracted_output }}"
-            assigned_to: "{{ user_sys_id }}"
+    - name: Get RITM Sys ID
+      uri:
+        url: "https://{{ snow_instance }}/api/now/table/sc_req_item"
+        method: GET
+        user: "{{ snow_user }}"
+        password: "{{ snow_password }}"
+        force_basic_auth: yes
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        params:
+          sysparm_query: "number={{ ritm_number }}"
+      register: ritm_info
 
-      rescue:
-        - name: Log Output For Failure
-          debug:
-            msg: "Log : FAILED : Task {{ ansible_failed_task.name }} Failed and the ERROR: {{ ansible_failed_result }}"
-          failed_when: True
+    - name: Update SNOW RITM State and Assign
+      uri:
+        url: "https://{{ snow_instance }}/api/now/table/sc_req_item/{{ ritm_info.json.result[0].sys_id }}"
+        method: PATCH
+        user: "{{ snow_user }}"
+        password: "{{ snow_password }}"
+        force_basic_auth: yes
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        body:
+          state: "{{ desired_state }}"  # Set the desired state
+          assigned_to: "{{ assigned_user }}"
+      register: snow_response
 
-        # - name: set fact ansible_failed_result
-        #   set_fact:
-        #     ansible_fail_result: "{{ ansible_failed_result.msg  }}"
+    - name: Display SNOW API Response
+      debug:
+        var: snow_response.json
 
-        # - name: print ansible_fail
-        #   debug:
-        #     var: ansible_fail_result 
 
-        # - name: call logging playbook 
-        #   include_tasks: logging.yml
-        #   vars:
-        #     ansible_failed_results: "{{ ansible_fail_result  }}"
+# ---
+# - name: Update sctask deatils in ServiceNow
+#   hosts: localhost
+#   gather_facts: true
+
+#   vars:
+#     servicenow_instance:  "https://dev213985.service-now.com" #"{{ servicenow_instance }}"
+#     pat_token: "_kGEag2qQ4gU7mMow2MGsL51v-s93THT3i63iCve2eqJrrvTdLqWyXClA4sCvhiuEgUXrTkQ7SHDMBN2l2_eOw" #"{{ pat_token }}"
+#     sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
+#     user_sys_id: "a8f98bb0eb32010045e1a5115206fe3a" #"{{ user_sys_id }}"
+#     extracted_output: "#03* - Automation In Progress -this is a demo message7" #"{{ extracted_output }}"
+#     sctask_state: "2" #"{{ sctask_state}}"
+        
+#   tasks:
+#     - block:
+#       - name: Update some fields in ServiceNow sctasks
+#         uri:
+#           url: "{{ servicenow_instance }}/api/now/table/sc_task/{{ sys_id }}"
+#           method: PATCH
+#           body_format: json
+#           headers:
+#             Accept: "application/json"
+#             #Authorization: "Basic {{ encoded_credentials | string }}"
+#             Authorization: "Bearer {{ pat_token }}"
+#           return_content: yes
+#           force_basic_auth: yes
+#           body:
+#             state: "{{ sctask_state}}"
+#             work_notes: "{{ extracted_output }}"
+#             assigned_to: "{{ user_sys_id }}"
+
+#       rescue:
+#         - name: Log Output For Failure
+#           debug:
+#             msg: "Log : FAILED : Task {{ ansible_failed_task.name }} Failed and the ERROR: {{ ansible_failed_result }}"
+#           failed_when: True
+
+#         # - name: set fact ansible_failed_result
+#         #   set_fact:
+#         #     ansible_fail_result: "{{ ansible_failed_result.msg  }}"
+
+#         # - name: print ansible_fail
+#         #   debug:
+#         #     var: ansible_fail_result 
+
+#         # - name: call logging playbook 
+#         #   include_tasks: logging.yml
+#         #   vars:
+#         #     ansible_failed_results: "{{ ansible_fail_result  }}"
 
 
 
