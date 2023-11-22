@@ -8,7 +8,7 @@
     pat_token: "t0d55cQF0S3bHRkgF4JeYZzAP5s4h8H7wJto4Diq73HxsUT2d6Sb4baupnIj-IiIAg35s8wkMCkITn-HiHV0Bg" #"{{ pat_token }}"
     sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
     user_sys_id: "6816f79cc0a8016401c5a33be04be441" #"{{ user_sys_id }}"
-    extracted_output: "#03* - Automation In Progress -'{{ Message }}'" #"{{ extracted_output }}"
+    extracted_output: "#03* - Automation In Progress -this is a demo message" #"{{ extracted_output }}"
     sctask_state: "2" #"{{ sctask_state}}"
         
   tasks:
