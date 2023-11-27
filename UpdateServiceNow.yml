@@ -5,9 +5,9 @@
 
   vars:
     servicenow_instance:  "https://dev213985.service-now.com" #"{{ servicenow_instance }}"
-    pat_token: "KoD9kh3m2FES-_GuH_0eRo4d-Lk4Eu1CNuM_4zclgZ6E6UTtRtTZNxca-8X9iGfgyO0JCkXJj-_0MEXnBbjXRg" #"{{ pat_token }}"
+    pat_token: "xxy2gq8QyN44iSLYxzxpym5_uTxu3Ozn5jgLLOZbVTZEu0KgbiQjcoOt4RBltgMxn9ZdoTjyT83hOASurMG9rA" #"{{ pat_token }}"
     sys_id: "21c48579932a31108a4470918bba107d" #"{{sys_id}}"
-    user_sys_id: "" #"6816f79cc0a8016401c5a33be04be441" #"{{ user_sys_id }}"
+    user_sys_id: "800b174138d089c868d09de320f9833b" #andrew.och #"{{ user_sys_id }}"
     extracted_output: "#03* - Automation In Progress - Testing2" #"{{ extracted_output }}"
     sctask_state: "2" #"{{ sctask_state}}"
         
